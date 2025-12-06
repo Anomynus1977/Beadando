@@ -66,18 +66,18 @@ namespace Beadando
                 Console.WriteLine(értékek[i].ToString());
             }
 
-
-
-            StreamWriter ki = new StreamWriter("adatok.json");
-
-            ki.WriteLine(JsonConvert.SerializeObject(értékek, Formatting.Indented));
-            ki.Flush();
-            ki.Close();
-
-
+            Json();
 
 
             Console.ReadKey();
         }//Main
+
+        private static void Json()
+        {
+            StreamWriter ki = new StreamWriter("adatok.json");
+            ki.WriteLine(JsonConvert.SerializeObject(értékek, Formatting.Indented));
+            ki.Flush();
+            ki.Close();
+        }
     }//Program
 }//Namespace
