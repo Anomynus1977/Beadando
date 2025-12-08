@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using LiteDB;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,7 @@ namespace Beadando
 {
     class Szenzor
     {
+        public int ID { get; set; }
         public double Homerseklet {  get; set; }
         public double Paratartalom {  get; set; }
         public double Vizszint {  get; set; }
@@ -59,11 +61,34 @@ namespace Beadando
                 x.Vizszint = vizszint;
                 x.Folyoszint = folyoszint;
                 értékek.Add(x);
-            }
+            }//értékadás
 
-            for (int i = 0; i < n; i++)
+            for (int i = 0; i < n; i++) //kiiratás
             {
                 Console.WriteLine(értékek[i].ToString());
+            }
+
+
+
+            using (var db = new LiteDatabase("Meres.db"))
+            {
+                var meresek = db.GetCollection<Szenzor>("meresek"); 
+                foreach(var item in értékek)
+                {
+                    var person = new Szenzor
+                    {
+                        Homerseklet = item.Homerseklet,
+                        Paratartalom = item.Paratartalom,
+                        Vizszint = item.Vizszint,
+                        Folyoszint = item.Folyoszint
+                    };
+                    meresek.Insert(person);
+                }
+                var query = meresek.FindAll();
+                foreach (var item in query)
+                {
+                    Console.WriteLine(item.ID + "\n" + item.Homerseklet + "\n" + item.Paratartalom + "\n" + item.Vizszint + "\n" + item.Folyoszint);
+                }
             }
 
             Json();
@@ -78,6 +103,6 @@ namespace Beadando
             ki.WriteLine(JsonConvert.SerializeObject(értékek, Formatting.Indented));
             ki.Flush();
             ki.Close();
-        }
+        }//Json file-ba írás
     }//Program
 }//Namespace
