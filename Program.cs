@@ -3,46 +3,23 @@ using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Meres_DLL;
 
 namespace Beadando
 {
-    class Szenzor
-    {
-        public int ID { get; set; }
-        public double Homerseklet {  get; set; }
-        public double Paratartalom {  get; set; }
-        public double Vizszint {  get; set; }
-        public double Folyoszint { get; set; }
-
-        public Szenzor(int homerseklet, int paratartalom, int vizszint, int folyoszint)
-        {
-            Homerseklet = homerseklet;
-            Paratartalom = paratartalom;
-            Vizszint = vizszint;
-            Folyoszint = folyoszint;
-        } 
-
-        public Szenzor() { }
-
-        public override string ToString()
-        {
-            return Math.Round(Homerseklet, 3) + " C°" + "; " + Math.Round(Paratartalom, 3) + " %" + "; " + Math.Round(Vizszint, 3) + " cm" + "; " + Math.Round(Folyoszint, 3) + " m";
-        }
-    }//Szenzor osztály
-
-
     internal class Program
     {
         static List<Szenzor> értékek = new List<Szenzor>();
-        delegate void Atvaltas(int x);
-
 
         static void Main(string[] args)
         {
-            
+            Console.Write("Szeretne amerikai mértékegységeket latni? (i/n): ");
+            string valasz = Console.ReadLine().ToLower();
+            if (valasz == "i")
+            { Delegált.amerikai = true; }
+
+
+
             Random r = new Random();
 
             Console.Write("Mennyi adatot szeretne leolvasi? ");
@@ -63,46 +40,66 @@ namespace Beadando
                 értékek.Add(x);
             }//értékadás
 
-            for (int i = 0; i < n; i++) //kiiratás
+            if (Delegált.amerikai == true)
             {
-                Console.WriteLine(értékek[i].ToString());
-            }
+                Delegált.Amerikai ho = Delegált.CelsiusToFahrenheit;
+                Delegált.Amerikai viz = Delegált.CmToInch;
+                Delegált.Amerikai folyo = Delegált.MeterToInch;
 
-
-
-            using (var db = new LiteDatabase("Meres.db"))
-            {
-                var meresek = db.GetCollection<Szenzor>("meresek"); 
-                foreach(var item in értékek)
+                foreach (var s in értékek)
                 {
-                    var person = new Szenzor
+                    Delegált.Atvalt(s, ho, viz, folyo);
+                }
+            }//delegate 
+            else
+            {
+                for (int i = 0; i < n; i++) //kiiratás
                     {
-                        Homerseklet = item.Homerseklet,
-                        Paratartalom = item.Paratartalom,
-                        Vizszint = item.Vizszint,
-                        Folyoszint = item.Folyoszint
-                    };
-                    meresek.Insert(person);
-                }
-                var query = meresek.FindAll();
-                foreach (var item in query)
-                {
-                    Console.WriteLine(item.ID + "\n" + item.Homerseklet + "\n" + item.Paratartalom + "\n" + item.Vizszint + "\n" + item.Folyoszint);
-                }
+                        Console.WriteLine(értékek[i].ToString());
+                    }
             }
 
-            Json();
+            string bemenet = "";
+            do
+            {
+                using (var db = new LiteDatabase("Meres.db"))
+                {
+                    var meresek = db.GetCollection<Szenzor>("meresek");
+                    Console.Write("Mit szeretne kezdeni az adatbázissal? mentés/frissítés/törlés/kiírás; befejezés => vége: ");
+                    bemenet = Console.ReadLine().ToLower();
 
+                    switch (bemenet)
+                    {
+                        case "mentés":
+                            foreach (var item in értékek)
+                            {
+                                var person = new Szenzor
+                                {
+                                    Homerseklet = item.Homerseklet,
+                                    Paratartalom = item.Paratartalom,
+                                    Vizszint = item.Vizszint,
+                                    Folyoszint = item.Folyoszint
+                                };
+                                meresek.Insert(person);
+                            }
+                            break;
 
+                        case "kiírás":
+                            var query = meresek.FindAll();
+                            foreach (var item in query)
+                            {
+                                Console.WriteLine(item.ID + "\n" + item.Homerseklet + "\n" + item.Paratartalom + "\n" + item.Vizszint + "\n" + item.Folyoszint);
+                            }
+                            Console.ReadKey();
+                            break;
+                    }
+                }
+            }
+            while (bemenet != "vége");
+
+            Json.Jsonki(értékek);
             Console.ReadKey();
         }//Main
 
-        private static void Json()
-        {
-            StreamWriter ki = new StreamWriter("adatok.json");
-            ki.WriteLine(JsonConvert.SerializeObject(értékek, Formatting.Indented));
-            ki.Flush();
-            ki.Close();
-        }//Json file-ba írás
     }//Program
 }//Namespace
