@@ -190,6 +190,29 @@ namespace Beadando
                 s.Ellenoriz();
             }
 
+            var avgHo = értékek.Average(x => x.Homerseklet);
+            Console.WriteLine($"Az átlag hőmérséklet: {avgHo}");
+
+            var maxViz = értékek.Max(x => x.Vizszint);
+            Console.WriteLine($"A Legmagasabb vízszint: {maxViz}");
+
+            Console.WriteLine("Kritikus páratartalom esetén mért értékek: ");
+            var veglet = értékek.Where(x => x.Paratartalom < 20 | x.Paratartalom > 70);
+            foreach (var item in veglet)
+            {
+                Console.WriteLine(item);
+            }
+
+            Console.WriteLine("Kritikusan magas folyószint esetén mért értékek: ");
+            var magas = from x in értékek
+                        where x.Folyoszint < 9
+                        select x;
+            foreach (var item in magas)
+            {
+                Console.WriteLine(item);
+            }
+            //linq
+
             Console.WriteLine("Szeretné a mostani eredméyneket JSON fájlba is menteni? i/n");
             valasz = Console.ReadLine().ToLower();
             if(valasz == "i")
