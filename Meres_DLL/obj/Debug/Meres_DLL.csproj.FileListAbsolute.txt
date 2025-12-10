@@ -1,0 +1,9 @@
+F:\Visual Studio\source\repos\Meres_DLL\bin\Debug\Meres_DLL.dll
+F:\Visual Studio\source\repos\Meres_DLL\bin\Debug\Meres_DLL.pdb
+F:\Visual Studio\source\repos\Meres_DLL\bin\Debug\Newtonsoft.Json.dll
+F:\Visual Studio\source\repos\Meres_DLL\bin\Debug\Newtonsoft.Json.xml
+F:\Visual Studio\source\repos\Meres_DLL\obj\Debug\Meres_DLL.csproj.AssemblyReference.cache
+F:\Visual Studio\source\repos\Meres_DLL\obj\Debug\Meres_DLL.csproj.CoreCompileInputs.cache
+F:\Visual Studio\source\repos\Meres_DLL\obj\Debug\Meres_DLL.csproj.Up2Date
+F:\Visual Studio\source\repos\Meres_DLL\obj\Debug\Meres_DLL.dll
+F:\Visual Studio\source\repos\Meres_DLL\obj\Debug\Meres_DLL.pdb
