@@ -217,7 +217,7 @@ namespace Beadando
                     folyojel = " inch";
                 }
 
-                Console.WriteLine("ID: " + item.ID + "\n" + "Hőmérséklet: " +  item.Homerseklet + hojel + "\n" + item.Paratartalom + parajel + "\n" + item.Vizszint + vizjel + "\n" + item.Folyoszint + folyojel);
+                Console.WriteLine("ID: " + item.ID + "\n" + "Hőmérséklet: " +  item.Homerseklet + hojel + "\n" + "Páratartalom: " + item.Paratartalom + parajel + "\n" + "Vízszint: " + item.Vizszint + vizjel + "\n" + "Folyószint: " + item.Folyoszint + folyojel);
             }
             Console.ReadKey();
         }
